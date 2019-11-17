@@ -63,7 +63,8 @@ func (a *App) getBook(w http.ResponseWriter, r *http.Request) {
 		}
 		return
 	}
-	respondWithJSON(w, http.StatusOK, b)
+
+	respondWithJSON(w, http.StatusOK, map[string]interface{}{"status": "success", "data": b})
 }
 
 func (a *App) getBooks(w http.ResponseWriter, r *http.Request) {
@@ -82,7 +83,8 @@ func (a *App) getBooks(w http.ResponseWriter, r *http.Request) {
 		respondWithError(w, http.StatusInternalServerError, err.Error())
 		return
 	}
-	respondWithJSON(w, http.StatusOK, books)
+
+	respondWithJSON(w, http.StatusOK, map[string]interface{}{"status": "success", "data": books})
 }
 
 func (a *App) createBook(w http.ResponseWriter, r *http.Request) {
@@ -98,7 +100,8 @@ func (a *App) createBook(w http.ResponseWriter, r *http.Request) {
 		respondWithError(w, http.StatusInternalServerError, err.Error())
 		return
 	}
-	respondWithJSON(w, http.StatusCreated, b)
+
+	respondWithJSON(w, http.StatusCreated, map[string]interface{}{"status": "success", "data": b})
 }
 
 func (a *App) updateBook(w http.ResponseWriter, r *http.Request) {
@@ -123,7 +126,7 @@ func (a *App) updateBook(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	respondWithJSON(w, http.StatusOK, b)
+	respondWithJSON(w, http.StatusOK, map[string]interface{}{"status": "success", "data": b})
 }
 
 func (a *App) deleteBook(w http.ResponseWriter, r *http.Request) {
@@ -140,5 +143,5 @@ func (a *App) deleteBook(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	respondWithJSON(w, http.StatusOK, map[string]string{"result": "success"})
+	respondWithJSON(w, http.StatusOK, map[string]string{"status": "success", "data": ""})
 }
