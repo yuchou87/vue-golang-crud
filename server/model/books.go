@@ -2,32 +2,51 @@ package model
 
 import (
 	"database/sql"
-	"errors"
 )
 
 type Book struct {
 	ID     int    `json:"id"`
 	Title  string `json:"title"`
 	Author string `json:"author"`
-	Read   bool   `json:"read"`
+	Status bool   `json:"status"`
 }
 
-func (b *Book) getBooks(db *sql.DB) error {
-	return errors.New("Not implemented")
+func (b *Book) GetBook(db *sql.DB) error {
+	return db.QueryRow("SELECT title, author, status FROM books WHERE id=$1", b.ID).Scan(&b.Title, &b.Author, &b.Status)
 }
 
-func (b *Book) updateBook(db *sql.DB) error {
-	return errors.New("Not implemented")
+func (b *Book) UpdateBook(db *sql.DB) error {
+	_, err := db.Exec("UPDATE books SET title=$1, author=$2, status=$3", b.Title, b.Author, b.Status)
+	return err
 }
 
-func (b *Book) deleteBook(db *sql.DB) error {
-	return errors.New("Not implemented")
+func (b *Book) DeleteBook(db *sql.DB) error {
+	_, err := db.Exec("DELETE FROM books WHERE id=$1", b.ID)
+	return err
 }
 
-func (b *Book) createBook(db *sql.DB) error {
-	return errors.New("Not implemented")
+func (b *Book) CreateBook(db *sql.DB) error {
+	err := db.QueryRow("INSERT INTO books(title, author, status) VALUES($1,$2,$3) RETURNING id", b.Title, b.Author, b.Status).Scan(&b.ID)
+	if err != nil {
+		return err
+	}
+	return nil
 }
 
-func getBooks(db *sql.DB, start, count int) ([]Book, error) {
-	return nil, errors.New("Not implemented")
+func GetBooks(db *sql.DB, start, count int) ([]Book, error) {
+	rows, err := db.Query("SELECT id, title, author, status FROM books LIMIT $1 OFFSET $2", count, start)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+
+	books := []Book{}
+	for rows.Next() {
+		var b Book
+		if err := rows.Scan(&b.ID, &b.Title, &b.Author, &b.Status); err != nil {
+			return nil, err
+		}
+		books = append(books, b)
+	}
+	return books, nil
 }
