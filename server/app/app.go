@@ -41,8 +41,10 @@ func (a *App) Initialize(user, password, dbname, host string) {
 
 // Run with CORS
 func (a *App) Run(addr string) {
-	corsOptions := handlers.CORSOption(handlers.AllowedOrigins([]string{"*"}))
-	log.Fatal(http.ListenAndServe(addr, handlers.CORS(corsOptions)(a.Router)))
+	headersOk := handlers.AllowedHeaders([]string{"X-Requested-With", "Content-Type", "Authorization"})
+	originsOk := handlers.AllowedOrigins([]string{"*"})
+	methodsOk := handlers.AllowedMethods([]string{"GET", "HEAD", "POST", "PUT", "OPTIONS", "DELETE"})
+	log.Fatal(http.ListenAndServe(addr, handlers.CORS(headersOk, originsOk, methodsOk)(a.Router)))
 }
 
 func (a *App) getBook(w http.ResponseWriter, r *http.Request) {
