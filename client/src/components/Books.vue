@@ -34,7 +34,13 @@
                 >
                 Update
               </button>
-              <button type="button" class="btn btn-danger btn-sm">Delete</button>
+              <button
+                type="button"
+                class="btn btn-danger btn-sm"
+                @click="onDeleteBook(book)"
+                >
+                Delete
+                </button>
             </div>
           </td>
         </tr>
@@ -177,6 +183,20 @@ export default {
           this.getBooks();
         });
     },
+    removeBook(bookID) {
+      const path = `http://localhost:5000/book/${bookID}`;
+      axios.delete(path)
+        .then(() => {
+          this.getBooks();
+          this.message = 'Book removed!';
+          this.showMessage = true;
+        })
+        .catch((error) => {
+          // eslint-disable-next-line no-console
+          console.error(error);
+          this.getBooks();
+        });
+    },
     initForm() {
       this.addBookForm.title = '';
       this.addBookForm.author = '';
@@ -224,6 +244,9 @@ export default {
       this.$refs.editBookModal.hide();
       this.initForm();
       this.getBooks();
+    },
+    onDeleteBook(book) {
+      this.removeBook(book.id);
     },
   },
   created() {
