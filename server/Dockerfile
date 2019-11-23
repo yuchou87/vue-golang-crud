@@ -4,12 +4,12 @@ WORKDIR /app
 COPY go.mod go.sum ./
 RUN go mod download
 COPY . .
-RUN CGO_ENABLED=0 GOOS=linux go build -a -installsuffix cgo -o app .
+RUN CGO_ENABLED=0 GOOS=linux go build -a -installsuffix cgo -o main .
 
 # production stage
 FROM alpine:latest as production-stage
 RUN apk --no-cache add ca-certificates
-COPY --from=build-stage /app/app .
-RUN chmod +x ./app
+COPY --from=build-stage /app/main .
+RUN chmod +x ./main
 EXPOSE 5000
-CMD ["./app"]
+CMD ["./main"]

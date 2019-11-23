@@ -1,0 +1,18 @@
+apiVersion: skaffold/v1
+kind: Config
+metadata:
+  name: vue-golang-crud
+build:
+  artifacts:
+  - image: registry.registry:5000/vue-golang-crud-client
+    context: client
+  - image: registry.registry:5000/vue-golang-crud-db
+    context: db
+  - image: registry.registry:5000/vue-golang-crud-server
+    context: server
+deploy:
+  kubectl:
+    manifests:
+    - client/kubernetes/deployment.yaml
+    - db/kubernetes/deployment.yaml
+    - server/kubernetes/deployment.yaml

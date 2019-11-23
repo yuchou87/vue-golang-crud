@@ -1,0 +1,35 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: vue-golang-crud-client
+  labels:
+    app: vue-golang-crud-client
+spec:
+  clusterIP: None
+  ports:
+    - port: 80
+      name: vue-golang-crud-client
+  selector:
+    app: vue-golang-crud-client
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: vue-golang-crud-client
+  labels:
+    app: vue-golang-crud-client
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: vue-golang-crud-client
+  template:
+    metadata:
+      labels:
+        app: vue-golang-crud-client
+    spec:
+      containers:
+      - name: vue-golang-crud-client
+        image: registry.registry:5000/vue-golang-crud-client
+        ports:
+        - containerPort: 80
