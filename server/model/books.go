@@ -16,7 +16,7 @@ func (b *Book) GetBook(db *sql.DB) error {
 }
 
 func (b *Book) UpdateBook(db *sql.DB) error {
-	_, err := db.Exec("UPDATE books SET title=$1, author=$2, status=$3", b.Title, b.Author, b.Status)
+	_, err := db.Exec("UPDATE books SET title=$1, author=$2, status=$3 WHERE id=$4", b.Title, b.Author, b.Status, b.ID)
 	return err
 }
 
@@ -26,7 +26,7 @@ func (b *Book) DeleteBook(db *sql.DB) error {
 }
 
 func (b *Book) CreateBook(db *sql.DB) error {
-	err := db.QueryRow("INSERT INTO books(title, author, status) VALUES($1,$2,$3) RETURNING id", b.Title, b.Author, b.Status).Scan(&b.ID)
+	err := db.QueryRow("INSERT INTO books(title, author, status) VALUES($1, $2, $3) RETURNING id", b.Title, b.Author, b.Status).Scan(&b.ID)
 	if err != nil {
 		return err
 	}
