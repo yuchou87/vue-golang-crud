@@ -76,32 +76,31 @@
   </b-form>
   </b-modal>
 
-  <b-modal ref="editBookModal" id="book-update-modal" title="Update" hide-footer>
+  <b-modal ref="editBookModal"
+          id="book-update-modal"
+          title="Update"
+          hide-footer>
     <b-form @submit="onSubmitUpdate" @reset="onResetUpdate" class="w-100">
-      <b-form-group id="form-title-edit-group"
-                    label="Title:"
-                    label-for="form-title-edit-input"
-                    >
+    <b-form-group id="form-title-edit-group"
+                  label="Title:"
+                  label-for="form-title-edit-input">
         <b-form-input id="form-title-edit-input"
                       type="text"
                       v-model="editForm.title"
                       required
-                      placeholder="Enter title"
-                      >
+                      placeholder="Enter title">
         </b-form-input>
       </b-form-group>
       <b-form-group id="form-author-edit-group"
                     label="Author:"
-                    label-for="form-author-edit-input"
-                    >
-        <b-form-input id="form-author-edit-input"
-                      type="text"
-                      v-model="editForm.author"
-                      required
-                      placeholder="Enter author"
-                      >
-        </b-form-input>
-      </b-form-group>
+                    label-for="form-author-edit-input">
+          <b-form-input id="form-author-edit-input"
+                        type="text"
+                        v-model="editForm.author"
+                        required
+                        placeholder="Enter author">
+          </b-form-input>
+        </b-form-group>
       <b-form-group id="form-read-edit-group">
         <b-form-checkbox-group v-model="editForm.status" id="form-checks">
           <b-form-checkbox value="true">Read?</b-form-checkbox>
@@ -152,7 +151,7 @@ export default {
         })
         .catch((error) => {
           // eslint-disable-next-line no-console
-          console.error(error);
+          console.log(error);
         });
     },
     addBook(payload) {
@@ -179,7 +178,7 @@ export default {
         })
         .catch((error) => {
           // eslint-disable-next-line no-console
-          console.error(error);
+          console.log(error);
           this.getBooks();
         });
     },
@@ -193,7 +192,7 @@ export default {
         })
         .catch((error) => {
           // eslint-disable-next-line no-console
-          console.error(error);
+          console.log(error);
           this.getBooks();
         });
     },
